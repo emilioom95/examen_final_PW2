@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Evaluación - Sistema de Evaluación{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Temporizador -->
+    <div class="alert alert-info fixed-top text-center" style="z-index: 1030;">
+        <h4 class="mb-0">Tiempo Restante: <span id="timer">00:00:00</span></h4>
+    </div>
+
+    <div class="row mt-5 pt-4">
+        <div class="col-md-8 offset-md-2">
+            <form method="post" action="{% url 'guardar_resultado' %}">
+                {% csrf_token %}
+                {% for pregunta in preguntas %}
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Pregunta {{ forloop.counter }}:</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ pregunta.enunciado }}</p>
+                        {% for respuesta in pregunta.respuesta_set.all %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="respuesta_{{ pregunta.id }}" value="{{ respuesta.id }}">
+                            <label class="form-check-label">
+                                {{ respuesta.texto }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary mt-3">Enviar Respuestas</button>
+                <button type="submit" name="finalizar" class="btn btn-danger mt-3">Finalizar Examen</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function startTimer(duration) {
+        let timer = duration, minutes, seconds;
+        const timerElement = document.getElementById('timer');
+        setInterval(function () {
+            minutes = Math.floor(timer / 60);
+            seconds = timer % 60;
+            timerElement.textContent = formatTime(timer);
+            if (--timer < 0) {
+                timer = 0;
+                // Aquí puedes agregar lógica para manejar el tiempo agotado, como redirigir o mostrar un mensaje.
+            }
+        }, 1000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const tiempoLimite = {{ tiempo_limite }} * 60;  // Convertir minutos a segundos
+        startTimer(tiempoLimite);
+    });
+</script>
+
+{% endblock %}

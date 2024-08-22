@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Sistema de Evaluación{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Información sobre Pruebas de Conocimiento -->
+        <div class="col-md-8">
+            <h1>Bienvenido al Sistema de Evaluación</h1>
+            <p>En esta página encontrarás información sobre las pruebas de conocimiento y los resultados generados.</p>
+            
+            <!-- Aquí puedes añadir la información generada sobre pruebas de conocimiento -->
+            <div class="alert alert-info">
+                <h4>Información sobre Pruebas de Conocimiento</h4>
+                <p>Las pruebas de conocimiento se actualizan periódicamente. Aquí podrás encontrar las pruebas más recientes y sus resultados.</p>
+            </div>
+
+            <!-- Ejemplo de lista de pruebas -->
+            <h3>Últimas Pruebas</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Prueba de Matemáticas - <a href="#" class="btn bg-success">Ver resultados</a></li>
+                <li class="list-group-item">Prueba de Historia - <a href="#" class="btn bg-success">Ver resultados</a></li>
+                <li class="list-group-item">Prueba de Ciencias - <a href="#" class="btn bg-success">Ver resultados</a></li>
+            </ul>
+        </div>
+        
+        <!-- Espacio para el contenido adicional -->
+        <div class="col-md-4">
+            <!-- Botones para crear usuario y logearse -->
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal">
+                    <i class="bi bi-person-plus"></i> Crear Usuario
+                </button>
+                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Crear Usuario -->
+<div class="modal fade" id="crearUsuarioModal" tabindex="-1" aria-labelledby="crearUsuarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crearUsuarioModalLabel">Crear Nuevo Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'crear_usuario' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password1" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password1" name="password1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password2" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" id="password2" name="password2" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Iniciar Sesión -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

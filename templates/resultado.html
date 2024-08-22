@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Resultado del Examen{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Resultado del Examen</h2>
+
+    {% if mensaje %}
+    <div class="alert alert-info">{{ mensaje }}</div>
+    {% else %}
+    <div class="alert alert-info">
+        <h4>Fecha y Hora del Intento:</h4>
+        <p>{{ fecha_hora }}</p>
+        
+        <h4>Número de Intento:</h4>
+        <p>{{ numero_intento }}</p>
+
+        <h4>Puntuación:</h4>
+        <p>{{ puntuacion }}</p>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <h4>Detalles de las Respuestas:</h4>
+        </div>
+        <div class="card-body">
+            {% for pregunta, respuestas in preguntas_respuestas.items %}
+            <div class="mb-3">
+                <h5>{{ pregunta.enunciado }}</h5>
+                <p><strong>Respuesta Seleccionada:</strong> {{ respuestas.respuesta_seleccionada }}</p>
+                <p><strong>Respuesta Correcta:</strong> {{ respuestas.respuesta_correcta }}</p>
+                <p><strong>Correcta:</strong> {% if respuestas.es_correcta %}Sí{% else %}No{% endif %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
